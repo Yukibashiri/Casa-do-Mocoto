@@ -1,5 +1,7 @@
 #include "bibliotecamocoto.h"
 
+//
+//
 //FUNÇÃO LIMPARTELA E PAUSA
 void parada(){
     printf ("\nPressione qualquer botão para voltar ao menu do programa.");
@@ -16,7 +18,7 @@ void info(){
 //FUNÇÃO CARDAPIO
 void cardapio(){
     system("cls");
-    printf ("------------------------------------CARDAPIO------------------------------------\n");
+    printf ("------------------------------------CARDAPIO------------------------------------");
     for (cont = 0; cont < 21; cont++) {
         if (cont <=9){
             printf ("[0%d] Produto: %s, Valor: %.2f.\n",cont,nome_produtos[cont],produtos[cont][0]);
@@ -30,13 +32,43 @@ void cardapio(){
     return;
 }
 //
+void cadastro_garcom(){
+    printf ("\nLista dos Garçons atuais\n");
+    for (cont = 0; cont < 5; cont++){
+        printf ("\nID:[%d]  Nome: %s.",cont,nomegarcom[cont]);
+    }
+    printf ("\n Gostaria de Adicionar/Alterar algum Garçom?\n 1 - Sim. 2- Nao\n R: ");
+    scanf ("%d",&decisao);
+    if (decisao == 1){
+        system ("cls");
+        printf ("Informe o ID no qual o Garçom será registrado: ");
+        scanf ("%d",&cont);
+        while (cont > 5){
+              printf ("\nERRO!\nInforme um ID valido no qual o Garçom será registrado:");
+              scanf ("%d",&cont);
+        }
+        if (nomegarcom[cont] != "NENHUM"){
+            printf ("Informe o nome do Garçom a ser registrado: ");
+            scanf ("%s",&nomegarcom[cont]);
+            printf ("\nGarçom: %s, foi registrado ao ID: %d, com sucesso!\n",nomegarcom[cont],cont);
+        }
+        else{
+            printf ("o ID informado já possui o Garçom: %s registado.",nomegarcom[cont]);
+        }
+    }
+    parada();
+    return;
+}
+
+
 //
+
 int main (void)
 {
     setlocale(LC_ALL, "Portuguese"); // caracteres e acentuação da língua portuguesa.
     info();
     do{
-        printf ("\n[1] CARDAPIO\n[2] INFO\n[0] ENCERRAR PROGRAMA\n");
+        printf ("---------------------------Bem-Vindo a Casa do Mocotó--------------------------\n[1] CARDAPIO\n[2] INFO\n[3] CADASTRO GARÇOM\n[0] ENCERRAR PROGRAMA\n");
         scanf ("%d", &opcao);
         system("cls");
         switch (opcao){
@@ -45,6 +77,9 @@ int main (void)
                  break;
             case (2):
                  info();
+                 break;
+            case (3):
+                 cadastro_garcom();
                  break;
             case (0):
                  printf ("TEM CERTEZA QUE GOSTARIA DE FECHAR O PROGRAMA?\n 1 - SIM\n 2 - NÃO\n Digite: ");
