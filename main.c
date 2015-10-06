@@ -106,10 +106,13 @@ void pedido(){
         printf ("\nQual o ID da mesa? ");
         scanf("%d",&decisao);
         printf ("\nQual o ID do produto? ");
-        scanf ("%d", &xxxxxxx);
+        scanf ("%d", &opcao);
         printf ("\n quantas unidades? ");
         scanf ("%d",&qnt_produto);
-        
+        for (cont = 0; cont < qnt_produto; cont++){
+            mesa[decisao][ti[decisao]] = opcao;
+            ti[decisao] ++
+        }
     }
 }
 //
@@ -120,7 +123,7 @@ int main (void)
     setlocale(LC_ALL, "Portuguese"); // caracteres e acentuação da língua portuguesa.
     info();
     do{
-        printf ("---------------------------Bem-Vindo a Casa do Mocotó--------------------------\n[1] CARDAPIO\n[2] INFO\n[3] CADASTRO GARÇOM\n[4] ABRIR MESA \n[0] ENCERRAR PROGRAMA\n");
+        printf ("---------------------------Bem-Vindo a Casa do Mocotó--------------------------\n[1] CARDAPIO\n[2] INFO\n[3] CADASTRO GARÇOM\n[4] ABRIR MESA\n[5] FAZER UM PEDIDO\n[0] ENCERRAR PROGRAMA\n");
         scanf ("%d", &opcao);
         system("cls");
         switch (opcao){
