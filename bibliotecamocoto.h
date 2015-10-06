@@ -11,6 +11,7 @@
 int cont,decisao,opcao,qnt_produto; // Variaveis decisão e contadores.
 char nomegarcom[6][50] = {"NENHUM","NENHUM","NENHUM","NENHUM","NENHUM","Nenhum"}; //Variavel utilizada apenas, para exibir o nome do garçom
 int mesa[15][50],totalmesa[15],salgarcom[6] = {0,0,0,0,0,0}; // Aqui seram salvo os ID's dos items adquiridos pelo usuario(mesa), o tatal da conta (totalmesa) e a comissão do garçom (salgarcom).
+int total_items[15] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 int link[15] = {5,5,5,5,5,5,5,5,5,5,5,5,5,5,5}; // Essa variavel guarda o id do garçom ( de 0 a 5) e o numero da mesa, utilizando ela fica facil de saber em qual mesa é feita o pedido e qual garçom recebe.
  float produtos[21][2] = {{8,0.05},{3,0.05},{3,0.07},{5,0.10},{7,0.10},{3,0.10},{60,0.10},{90,0.15},{75,0.10},{60,0.12},{80,0.15},{65,0.15},{15,0.10},{12,0.10},{30,0.15}, //Valores dos produtos
                          {30,0.15},{12,0.15},{11,0.15},{4,0.15},{12,0.15},{45,0.15}};
