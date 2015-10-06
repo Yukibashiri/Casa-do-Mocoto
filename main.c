@@ -96,6 +96,22 @@ void abrir_mesa(){
     parada();
 }
 
+void pedido(){
+    printf ("\Gostaria de rever o cardapio? 1 - SIM. 2 - NÃO\nR: ");
+    scanf ("%d",&decisao);
+    if (decisao == 1){
+        cardapio();
+    }
+    do{
+        printf ("\nQual o ID da mesa? ");
+        scanf("%d",&decisao);
+        printf ("\nQual o ID do produto? ");
+        scanf ("%d", &xxxxxxx);
+        printf ("\n quantas unidades? ");
+        scanf ("%d",&qnt_produto);
+        
+    }
+}
 //
 
 
