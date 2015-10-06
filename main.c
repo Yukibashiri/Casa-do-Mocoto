@@ -31,9 +31,9 @@ void cardapio(){
     parada();
     return;
 }
-//
+//FUNÇÂO CADASTRO DE GARÇOM, SENDO QUE SÓ PODEM TER 5.
 void cadastro_garcom(){
-    printf ("\nLista dos Garçons atuais\n");
+    printf ("Lista dos Garçons atuais\n");
     for (cont = 0; cont < 5; cont++){
         printf ("\nID:[%d]  Nome: %s.",cont,nomegarcom[cont]);
     }
@@ -47,7 +47,7 @@ void cadastro_garcom(){
               printf ("\nERRO!\nInforme um ID valido no qual o Garçom será registrado:");
               scanf ("%d",&cont);
         }
-        if (nomegarcom[cont] != "NENHUM"){
+        if (strcmp(nomegarcom[cont], "NENHUM") == 0){
             printf ("Informe o nome do Garçom a ser registrado: ");
             scanf ("%s",&nomegarcom[cont]);
             printf ("\nGarçom: %s, foi registrado ao ID: %d, com sucesso!\n",nomegarcom[cont],cont);
@@ -59,16 +59,52 @@ void cadastro_garcom(){
     parada();
     return;
 }
-
+// REGISTRAR GARÇOM A MESA.
+void abrir_mesa(){
+    printf ("Gostaria de ver a lista das mesas e seus garçons antes?\n 1 - Sim. 2 - Não\nR: ");
+    scanf ("%d", &decisao);
+    if (decisao == 1){
+        for (cont = 0; cont <15; cont++){
+                if (cont <=9){
+                    printf ("\nMesa 0%d, Garçom: %s.",cont,nomegarcom[link[cont]]);
+                }
+                else{
+                    printf ("\nMesa %d, Garçom: %s.",cont,nomegarcom[link[cont]]);
+                }
+        }
+    }
+    parada();
+    do{
+        printf ("\nInforme o ID da mesa: ");
+        scanf ("%d",&decisao);
+        if ((decisao <=14) && (link[decisao] == 5)) {
+            for (cont = 0; cont < 5; cont++){
+                printf ("\nID:[%d]  Nome: %s.",cont,nomegarcom[cont]);
+            }
+            do{
+                printf ("\nInforme o ID do Garçom: ");
+                scanf ("%d",&link[decisao]);
+            }
+              while (link[decisao] > 5);
+            }
+        else {
+            printf ("\nERRO! ID informado não corresponde com nenhuma mesa ou a mesma já esta registrada.\n");
+            decisao = 20;
+        }
+    }
+    while (decisao == 20);
+    parada();
+}
 
 //
+
 
 int main (void)
 {
     setlocale(LC_ALL, "Portuguese"); // caracteres e acentuação da língua portuguesa.
     info();
     do{
-        printf ("---------------------------Bem-Vindo a Casa do Mocotó--------------------------\n[1] CARDAPIO\n[2] INFO\n[3] CADASTRO GARÇOM\n[0] ENCERRAR PROGRAMA\n");
+        printf ("---------------------------Bem-Vindo a Casa do Mocotó--------------------------\n[1] CARDAPIO\n[2] INFO\n[3] CADASTRO GARÇOM\n[4] ABRIR MESA \n[0] ENCERRAR PROGRAMA\n");
         scanf ("%d", &opcao);
         system("cls");
         switch (opcao){
@@ -80,6 +116,9 @@ int main (void)
                  break;
             case (3):
                  cadastro_garcom();
+                 break;
+            case (4):
+                 abrir_mesa();
                  break;
             case (0):
                  printf ("TEM CERTEZA QUE GOSTARIA DE FECHAR O PROGRAMA?\n 1 - SIM\n 2 - NÃO\n Digite: ");
