@@ -8,6 +8,7 @@
 #define caso "Proposta de melhoria utilizando as Tecnologias da Informação"
 #define aluno "Mario Damião Caparroz Remistico Junior"
 #define professor "Fabio Farias Feitosa"
+#define nameless "NENHUM"
 char loguin[] = {"admin"}; //loguin
 int admin = 0,loguin_pw = {12345}; //senha
 int cont,decisao,opcao,qnt_produto,clock[15] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // Variaveis decisão e contadores.
