@@ -55,11 +55,11 @@ void cadastro_garcom(){
         printf ("Informe o ID no qual o Garçom será registrado: ");
         scanf ("%d",&cont);
         while (cont > 5){
-              printf ("\nERRO!\nInforme um ID valido no qual o Garçom será registrado:");
+              printf ("\nERRO!\nInforme um ID valido no qual o Garçom será registrado: ");
               scanf ("%d",&cont);
         }
         if ( (strcmp(nomegarcom[cont], "NENHUM") == 0) || (admin == 1) ){
-            printf ("Informe o nome do Garçom a ser registrado: ");
+            printf ("\n Informe o nome do Garçom a ser registrado: ");
             scanf ("%s",&nomegarcom[cont]);
             printf ("\nGarçom: %s, foi registrado ao ID: %d, com sucesso!\n",nomegarcom[cont],cont);
         }
@@ -187,7 +187,7 @@ void fechar_conta(){
 }
 // FUNÇÃO QUE RESETA TODAS AS VARIAVEIS, PARA REINICIAR O "DIA".
 void reset_fluxo(){
-    printf ("Tem certeza que gostaria de Reiniciar os valores?  1 - SIM.    2 - NÃO");
+    printf ("Tem certeza que gostaria de Reiniciar os valores?  1 - SIM.    2 - NÃO\n R: ");
     scanf ("%d",&opcao);
     if ((admin == 1) && (opcao == 1)){
         for (decisao = 0; decisao < 15; decisao ++){
@@ -202,7 +202,9 @@ void reset_fluxo(){
             }
             for (cont = 0; cont < 6; cont++){
                 salgarcom[cont] = 0;
-                nomegarcom[cont][50] = "NENHUM";
+                if ((strcmp(nomegarcom[cont], "NENHUM") != 0)){
+                    strcpy(nomegarcom[cont],nameless);
+                }
             }
         }
         printf ("\nVariaveis Reiniciadas!\n");
