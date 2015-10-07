@@ -74,6 +74,7 @@ void cadastro_garcom(){
 void abrir_mesa(){
     printf ("Gostaria de ver a lista das mesas e seus garçons antes?\n 1 - Sim. 2 - Não\nR: ");
     scanf ("%d", &decisao);
+    system("cls");
     if (decisao == 1){
         for (cont = 0; cont <15; cont++){
                 if (cont <=9){
@@ -149,6 +150,7 @@ void mostrar_conta(){
         soma += produtos[mesa[decisao][cont]][0];
     }
     printf ("\n                                      TOTAL: RS %.2f.\n", soma);
+    soma = 0;
     parada();
     return;
 }
@@ -161,9 +163,9 @@ void fechar_conta(){
         }
     for (clock[decisao]; clock[decisao] < (ti[decisao]); clock[decisao] ++){
         totalmesa[decisao] += produtos[mesa[decisao][clock[decisao]]][0];
-        salgarcom[link[decisao]] += (produtos[mesa[decisao][clock[decisao]]][0] * produtos[mesa[decisao][clock[decisao]]][1]);
+        salgarcom[link[decisao]] = salgarcom[link[decisao]] + (produtos[mesa[decisao][clock[decisao]]][0] * produtos[mesa[decisao][clock[decisao]]][1]);
     }
-    printf ("\n\nTotal a pagar: %.2f.\n",totalmesa[decisao]);
+    printf ("\n\nTotal a pagar: %.2f.\n",totalmesa[decisao],salgarcom[link[decisao]]);
     printf ("Efetuar pagamento?    1- SIM.    2 - NÃO.\nR: ");
     scanf ("%d",&opcao);
     if (opcao == 1){
@@ -211,10 +213,39 @@ void reset_fluxo(){
     parada();
     return;
 }
+//FUNÇÃO DE EXTORQUIR ITENS
+void extorquir_item(){
+    mostrar_conta();
+    do{
+        printf ("Informe o ID do pedido a ser extorquido: ");
+        scanf ("%d",&cont);
+        printf ("\n [%d]  Produto: %s, valor: %.2f.\n esta correto?     \n1 - SIM.    2 - NÃO.\nR: ",cont,nome_produtos[mesa[decisao][cont]],produtos[mesa[decisao][cont]][0]);
+        scanf ("%d",&opcao);
+        if (opcao == 1){
+            opcao = 99;
+            mesa[decisao][cont]= 21;
+            system("cls");
+            printf ("\nItem %d, extorquido com sucesso!.\n",cont);
+            getch();
+            printf ("Gostaria de ver a conta atualizada?\n1 - SIM.    2 - NÃO.\nR: ");
+            scanf ("%d",&cont);
+            if (cont == 1){
+                mostrar_conta();
+            }
+        }
+        else{
+            printf ("\nOpção digitada Invalida!\n");
+            system ("cls");
+        }
+    }
+    while(opcao != 99);
+    parada();
+    return;
+}
 //FUNÇÃO DE LOGUIN
 void admin_admin(){
     if (admin == 0){
-        printf ("Area destinada a Admnistradores!\n Admnistradores podem alterar nome de garçons e fechar/abrir a noite.\n");
+        printf ("Area destinada a Admnistradores!\n Admnistradores podem alterar nome de garçons, fechar/abrir a noite e Extorquir um pedido.\n");
         printf ("\nPor favor, informe os seguintes dados:\n Usuario: ");
         scanf ("%s",&loguin);
         printf ("\n Senha: ");
@@ -225,29 +256,85 @@ void admin_admin(){
         }
         else{
             printf ("\nUsuario ou senha invalido!");
+
         }
     }
-    else{
-        printf ("\nGostaria de deslogar a conta de Admnistrador?  1- SIM. 2- NÃO.\n R: ");
-        scanf ("%d",&decisao);
-        if (decisao == 1){
-            admin = 0;
-            printf ("\n     Conta deslogada!");
+
+    if (admin == 1){
+        do{
+            system("cls");
+            printf ("\n---MENU---  \n[1] FECHAR/ABRIR NOITE\n[2] EXTORQUIR ITEM\n[3] SALDO CAIXA\n[8] VOLTAR AO MENU PRINCIPAL\n[9] DESLOGAR\n");
+            scanf ("%d",&opcao);
+            switch (opcao){
+                case (1):
+                     reset_fluxo();
+                     break;
+                case (2):
+                     extorquir_item();
+                     break;
+                case (3):
+                     saldo_caixa();
+                     break;
+                case (8):
+                     opcao = 9;
+                     printf ("Voltando ao menu principal!");
+                     break;
+                case (9):
+                     admin = 0;
+                     printf ("\n     Conta deslogada!");
+                     break;
+            }
         }
+        while (opcao != 9);
     }
     parada();
     return;
 }
-//
-
-
+// FUNÇÃO QUE MOSTRA AO GARÇOM O VALOR QUE ESSE TEM A RECEBER.
+mostrar_comissao(){
+    printf ("\nExistem duas formas de checar a comissão total:    \n1 - ID da mesa sendo atendida atualmente.  \n2 - ID do garçom.\n R: ");
+    scanf ("%d",&opcao);
+    switch (opcao){
+        case (1):
+             certificar_mesa();
+             printf ("Garçom: %s, Comissão:  %.2f.",nomegarcom[link[decisao]],salgarcom[link[decisao]]);
+             break;
+        case (2):
+             do{
+                printf ("\nInforme o ID do garçom: ");
+                scanf("%d",&opcao);
+                if (opcao > 5){
+                    printf ("\nERRO! ID digitado invalido!\n");
+                }
+            }
+            while (opcao > 5);
+            system ("cls");
+            printf ("Garçom: %s, Comissão:  %.2f.",nomegarcom[opcao],salgarcom[opcao]);
+            break;
+        default:
+            printf ("\nOpção invalida!\n");
+    }
+    parada();
+    return;
+}
+// FUNÇÃO QUE MOSTRA O TOTAL DE DINHEIRO JÁ RECEBIDO.
+void saldo_caixa(){
+    for (cont = 0; cont < 6; cont ++){
+        totalcomissoes += salgarcom[cont];
+    }
+    printf ("Total recebido: %.2f.\nComissões: %.2f.\nResto: %.2f.",totalcaixa,totalcomissoes,(totalcaixa - totalcomissoes));
+    totalcomissoes = 0;
+    parada();
+    return;
+}
+// FUNÇÃO PRINCIPAL
 int main (void)
 {
     setlocale(LC_ALL, "Portuguese"); // caracteres e acentuação da língua portuguesa.
     info();
     do{
         printf ("---------------------------Bem-Vindo a Casa do Mocotó--------------------------\n[1] CARDAPIO\n[2] INFO\n[3] CADASTRO GARÇOM\n[4] ABRIR MESA\n[5] FAZER UM PEDIDO\n");
-        printf ("[6] MOSTRAR A CONTA\n[7] FECHAR CONTA\n[8] ADMIN\n[9] FECHAR O DIA\n[0] ENCERRAR PROGRAMA\n");
+        printf ("[6] MOSTRAR A CONTA\n[7] FECHAR CONTA\n[8] PAINEL DO ADMNISTRADOR\n[9] MOSTRAR COMISSÃO\n[0] ENCERRAR PROGRAMA\n");
         scanf ("%d", &opcao);
         system("cls");
         switch (opcao){
@@ -276,7 +363,7 @@ int main (void)
                  admin_admin();
                  break;
             case (9):
-                 reset_fluxo();
+                 mostrar_comissao();
                  break;
             case (0):
                  printf ("TEM CERTEZA QUE GOSTARIA DE FECHAR O PROGRAMA?\n 1 - SIM\n 2 - NÃO\n Digite: ");
