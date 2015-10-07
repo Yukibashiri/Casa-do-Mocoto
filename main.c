@@ -1,6 +1,4 @@
 #include "bibliotecamocoto.h"
-
-//
 //
 //FUNÇÃO LIMPARTELA E PAUSA
 void parada(){
@@ -93,29 +91,61 @@ void abrir_mesa(){
         }
     }
     while (decisao == 20);
+    printf("\nMesa registrada com sucesso!\n");
     parada();
 }
-
-void pedido(){
-    printf ("\nGostaria de rever o cardapio? 1 - SIM. 2 - NÃO\nR: ");
-    scanf ("%d",&decisao);
-    if (decisao == 1){
-        cardapio();
-    }
-    do{
-        printf ("\nQual o ID da mesa? ");
-        scanf("%d",&decisao);
+// Função que cria o pedido, já indicando a mesa e garçom.
+void pedido_item(){
+        do{
+            printf ("\nQual o ID da mesa? ");
+            scanf("%d",&decisao);
+            if (decisao > 15){
+                printf ("\nERRO! ID digitado invalido!\n");
+            }
+        }
+        while (decisao > 15);
+        system("cls");
+        printf ("\nGostaria de rever o cardapio? 1 - SIM. 2 - NÃO\nR: ");
+        scanf ("%d",&decisao);
+        if (decisao == 1){
+            cardapio();
+        }
+        do{
         printf ("\nQual o ID do produto? ");
         scanf ("%d", &opcao);
-        printf ("\n quantas unidades? ");
+        printf ("\n Produto: %s.\n Quantidade: ",nome_produtos[opcao]);
         scanf ("%d",&qnt_produto);
         for (cont = 0; cont < qnt_produto; cont++){
             mesa[decisao][ti[decisao]] = opcao;
-            ti[decisao] ++
+            ti[decisao] ++;
         }
+        printf ("\n Item adicionado com sucesso!\n\nGostaria de adicionar mais algum item ao pedido? 1- SIM. 2- NÃO\nR: ");
+        scanf ("%d",&opcao);
     }
+    while (opcao == 1);
+    parada();
+    return;
 }
 //
+void mostrar_conta(){
+    do{
+        printf ("\nQual o ID da mesa? ");
+        scanf("%d",&decisao);
+        if (decisao > 15){
+            printf ("\nERRO! ID digitado invalido!\n");
+            }
+        }
+    while (decisao > 15);
+    printf ("Produtos consumidos pela mesa %d.\n",decisao);
+    for (cont = 0; cont > ti[decisao]; cont ++){
+        printf ("\nProduto: %s, valor: %.2f.",nome_produtos[mesa[decisao][cont]]);
+        totalmesa[decisao] += produtos[mesa[decisao][cont]][0];
+    }
+    printf ("                       TOTAL: RS %.2f.", totalmesa[decisao]);
+    parada();
+    return;
+}
+
 
 
 int main (void)
@@ -138,6 +168,15 @@ int main (void)
                  break;
             case (4):
                  abrir_mesa();
+                 break;
+            case (5):
+                 pedido_item();
+                 break;
+            case (6):
+                 mostrar_conta();
+                 break;
+            case (7):
+
                  break;
             case (0):
                  printf ("TEM CERTEZA QUE GOSTARIA DE FECHAR O PROGRAMA?\n 1 - SIM\n 2 - NÃO\n Digite: ");
