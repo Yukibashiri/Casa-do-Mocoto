@@ -7,6 +7,19 @@ void parada(){
     system("cls");
     return;
 }
+//Função para confirmação do numero da mesa, pois essa é a principal variavel no momemento dos calculos.
+void certificar_mesa(){
+    do{
+        printf ("\nQual o ID da mesa? ");
+        scanf("%d",&decisao);
+        if (decisao > 15){
+            printf ("\nERRO! ID digitado invalido!\n");
+            }
+    }
+    while (decisao > 15);
+    system ("cls");
+    return;
+}
 //FUNÇÃO INFO
 void info(){
    printf ("CASE: %s  \nAluno: %s \nProfessor: %s \n",caso,aluno,professor);  // Titulo do programa
@@ -96,15 +109,7 @@ void abrir_mesa(){
 }
 // Função que cria o pedido, já indicando a mesa e garçom.
 void pedido_item(){
-        do{
-            printf ("\nQual o ID da mesa? ");
-            scanf("%d",&decisao);
-            if (decisao > 15){
-                printf ("\nERRO! ID digitado invalido!\n");
-            }
-        }
-        while (decisao > 15);
-        system("cls");
+        certificar_mesa();
         printf ("\nGostaria de rever o cardapio? 1 - SIM. 2 - NÃO\nR: ");
         scanf ("%d",&opcao);
         if (opcao == 1){
@@ -127,26 +132,86 @@ void pedido_item(){
     parada();
     return;
 }
-//
+// Mostra a conta e o valor total até o momento.
 void mostrar_conta(){
-    do{
-        printf ("\nQual o ID da mesa? ");
-        scanf("%d",&decisao);
-        if (decisao > 15){
-            printf ("\nERRO! ID digitado invalido!\n");
-            }
-        }
-    while (decisao > 15);
+    if (opcao != 99){
+        certificar_mesa();
+    }
     printf ("Produtos consumidos pela mesa %d.\n",decisao);
     for (cont = 0; cont < (ti[decisao]); cont ++){
-        printf ("\nProduto: %s, valor: %.2f.",nome_produtos[mesa[decisao][cont]],produtos[mesa[decisao][cont]][0]);
-        totalmesa[decisao] += produtos[mesa[decisao][cont]][0];
+        if (cont <= 9){
+            printf ("\n [0%d]  Produto: %s, valor: %.2f.",cont,nome_produtos[mesa[decisao][cont]],produtos[mesa[decisao][cont]][0]);
+
+        }
+        else{
+            printf ("\n [%d]  Produto: %s, valor: %.2f.",cont,nome_produtos[mesa[decisao][cont]],produtos[mesa[decisao][cont]][0]);
+        }
+        soma += produtos[mesa[decisao][cont]][0];
     }
-    printf ("\n                                      TOTAL: RS %.2f.", totalmesa[decisao]);
+    printf ("\n                                      TOTAL: RS %.2f.\n", soma);
     parada();
     return;
 }
-
+// FECHAR CONTA, Atibuir comissao ao garçom.
+void fechar_conta(){
+    certificar_mesa();
+    printf ("Produtos consumidos pela mesa %d.\n",decisao);
+    for (cont = 0; cont < (ti[decisao]); cont ++){
+        printf ("\nProduto: %s, valor: %.2f.",nome_produtos[mesa[decisao][cont]],produtos[mesa[decisao][cont]][0]);
+        }
+    for (clock[decisao]; clock[decisao] < (ti[decisao]); clock[decisao] ++){
+        totalmesa[decisao] += produtos[mesa[decisao][clock[decisao]]][0];
+        salgarcom[link[decisao]] += (produtos[mesa[decisao][clock[decisao]]][0] * produtos[mesa[decisao][clock[decisao]]][1]);
+    }
+    printf ("\n\nTotal a pagar: %.2f.\n",totalmesa[decisao]);
+    printf ("Efetuar pagamento?    1- SIM.    2 - NÃO.\nR: ");
+    scanf ("%d",&opcao);
+    if (opcao == 1){
+        totalcaixa += totalmesa[decisao];
+        printf ("Mesa [%d], pagamento efetuado!\n       Obrigado pela preferência e volte sempre! \2\n",decisao);
+        for (cont = 0; cont < ti[decisao]; cont++){
+            mesa[decisao][cont] = 0;
+        }
+        totalmesa[decisao] = 0;
+        link[decisao] = 0;
+        ti[decisao] = 0;
+        clock[decisao] = 0;
+    }
+    else {
+        printf ("\nPagamento da conta, não efetuado!\n");
+    }
+    parada();
+    return;
+}
+// FUNÇÃO QUE RESETA TODAS AS VARIAVEIS, PARA REINICIAR O "DIA".
+void reset_fluxo(){
+    printf ("Tem certeza que gostaria de Reiniciar os valores?  1 - SIM.    2 - NÃO");
+    scanf ("%d",&opcao);
+    if ((admin == 1) && (opcao == 1)){
+        for (decisao = 0; decisao < 15; decisao ++){
+            clock[decisao] = 0;
+            ti[decisao] = 0;
+            link[decisao] = 5;
+            totalmesa[decisao] = 0;
+            totalcaixa = 0;
+            totalcomissoes = 0;
+            for (cont = 0; cont < 50; cont++){
+                mesa[decisao][cont] = 0;
+            }
+            for (cont = 0; cont < 6; cont++){
+                salgarcom[cont] = 0;
+                nomegarcom[decisao][50] = "NENHUM";
+            }
+        }
+        printf ("\nVariaveis Reiniciadas!\n");
+    }
+    else{
+        ("\nVariaveis mantidas!\n");
+    }
+    parada();
+    return;
+}
+//FUNÇÃO DE LOGUIN
 void admin_admin(){
     if (admin == 0){
         printf ("Area destinada a Admnistradores!\n Admnistradores podem alterar nome de garçons e fechar/abrir a noite.\n");
@@ -173,6 +238,8 @@ void admin_admin(){
     parada();
     return;
 }
+//
+
 
 int main (void)
 {
@@ -203,13 +270,13 @@ int main (void)
                  mostrar_conta();
                  break;
             case (7):
-                // fechar_conta();
+                 fechar_conta();
                  break;
             case (8):
                  admin_admin();
                  break;
             case (9):
-                // reset_variavel();
+                 reset_fluxo();
                  break;
             case (0):
                  printf ("TEM CERTEZA QUE GOSTARIA DE FECHAR O PROGRAMA?\n 1 - SIM\n 2 - NÃO\n Digite: ");
