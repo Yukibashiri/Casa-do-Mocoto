@@ -36,4 +36,5 @@ void reset_fluxo();
 void mostrar_comissao();
 void extorquir_item();
 void saldo_caixa();
+int main();
 #endif
