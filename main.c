@@ -106,8 +106,8 @@ void pedido_item(){
         while (decisao > 15);
         system("cls");
         printf ("\nGostaria de rever o cardapio? 1 - SIM. 2 - NÃO\nR: ");
-        scanf ("%d",&decisao);
-        if (decisao == 1){
+        scanf ("%d",&opcao);
+        if (opcao == 1){
             cardapio();
         }
         do{
@@ -121,12 +121,13 @@ void pedido_item(){
         }
         printf ("\n Item adicionado com sucesso!\n\nGostaria de adicionar mais algum item ao pedido? 1- SIM. 2- NÃO\nR: ");
         scanf ("%d",&opcao);
+        system ("cls");
     }
     while (opcao == 1);
     parada();
     return;
 }
-// Função que mostra a a lista dos itens já consumidos pela mesa e o total até o momento.
+//
 void mostrar_conta(){
     do{
         printf ("\nQual o ID da mesa? ");
@@ -135,13 +136,13 @@ void mostrar_conta(){
             printf ("\nERRO! ID digitado invalido!\n");
             }
         }
-    while (decisao < 15);
+    while (decisao > 15);
     printf ("Produtos consumidos pela mesa %d.\n",decisao);
-    for (cont = 0; cont > ti[decisao]; cont ++){
-        printf ("\nProduto: %s, valor: %.2f.",nome_produtos[mesa[decisao][cont]]);
+    for (cont = 0; cont < (ti[decisao]); cont ++){
+        printf ("\nProduto: %s, valor: %.2f.",nome_produtos[mesa[decisao][cont]],produtos[mesa[decisao][cont]][0]);
         totalmesa[decisao] += produtos[mesa[decisao][cont]][0];
     }
-    printf ("                       TOTAL: RS %.2f.", totalmesa[decisao]);
+    printf ("\n                                      TOTAL: RS %.2f.", totalmesa[decisao]);
     parada();
     return;
 }
