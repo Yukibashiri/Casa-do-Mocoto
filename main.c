@@ -97,7 +97,7 @@ void abrir_mesa(){
 }
 
 void pedido(){
-    printf ("\Gostaria de rever o cardapio? 1 - SIM. 2 - NÃO\nR: ");
+    printf ("\nGostaria de rever o cardapio? 1 - SIM. 2 - NÃO\nR: ");
     scanf ("%d",&decisao);
     if (decisao == 1){
         cardapio();
