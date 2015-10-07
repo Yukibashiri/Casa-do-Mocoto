@@ -2,7 +2,7 @@
 //
 //FUNÇÃO LIMPARTELA E PAUSA
 void parada(){
-    printf ("\nPressione qualquer botão para voltar ao menu do programa.");
+    printf ("\nPressione qualquer botão para dar continuidade programa.");
     getch();
     system("cls");
     return;
@@ -45,7 +45,7 @@ void cadastro_garcom(){
               printf ("\nERRO!\nInforme um ID valido no qual o Garçom será registrado:");
               scanf ("%d",&cont);
         }
-        if (strcmp(nomegarcom[cont], "NENHUM") == 0){
+        if ( (strcmp(nomegarcom[cont], "NENHUM") == 0) || (admin == 1) ){
             printf ("Informe o nome do Garçom a ser registrado: ");
             scanf ("%s",&nomegarcom[cont]);
             printf ("\nGarçom: %s, foi registrado ao ID: %d, com sucesso!\n",nomegarcom[cont],cont);
@@ -126,7 +126,7 @@ void pedido_item(){
     parada();
     return;
 }
-//
+// Função que mostra a a lista dos itens já consumidos pela mesa e o total até o momento.
 void mostrar_conta(){
     do{
         printf ("\nQual o ID da mesa? ");
@@ -135,7 +135,7 @@ void mostrar_conta(){
             printf ("\nERRO! ID digitado invalido!\n");
             }
         }
-    while (decisao > 15);
+    while (decisao < 15);
     printf ("Produtos consumidos pela mesa %d.\n",decisao);
     for (cont = 0; cont > ti[decisao]; cont ++){
         printf ("\nProduto: %s, valor: %.2f.",nome_produtos[mesa[decisao][cont]]);
@@ -146,14 +146,40 @@ void mostrar_conta(){
     return;
 }
 
-
+void admin_admin(){
+    if (admin == 0){
+        printf ("Area destinada a Admnistradores!\n Admnistradores podem alterar nome de garçons e fechar/abrir a noite.\n");
+        printf ("\nPor favor, informe os seguintes dados:\n Usuario: ");
+        scanf ("%s",&loguin);
+        printf ("\n Senha: ");
+        scanf ("%d",&loguin_pw);
+        if (strcmp(loguin, "admin") == 0 && (loguin_pw == 12345)){
+            admin = 1;
+            printf ("\nLogado com sucesso!");
+        }
+        else{
+            printf ("\nUsuario ou senha invalido!");
+        }
+    }
+    else{
+        printf ("\nGostaria de deslogar a conta de Admnistrador?  1- SIM. 2- NÃO.\n R: ");
+        scanf ("%d",&decisao);
+        if (decisao == 1){
+            admin = 0;
+            printf ("\n     Conta deslogada!");
+        }
+    }
+    parada();
+    return;
+}
 
 int main (void)
 {
     setlocale(LC_ALL, "Portuguese"); // caracteres e acentuação da língua portuguesa.
     info();
     do{
-        printf ("---------------------------Bem-Vindo a Casa do Mocotó--------------------------\n[1] CARDAPIO\n[2] INFO\n[3] CADASTRO GARÇOM\n[4] ABRIR MESA\n[5] FAZER UM PEDIDO\n[0] ENCERRAR PROGRAMA\n");
+        printf ("---------------------------Bem-Vindo a Casa do Mocotó--------------------------\n[1] CARDAPIO\n[2] INFO\n[3] CADASTRO GARÇOM\n[4] ABRIR MESA\n[5] FAZER UM PEDIDO\n");
+        printf ("[6] MOSTRAR A CONTA\n[7] FECHAR CONTA\n[8] ADMIN\n[9] FECHAR O DIA\n[0] ENCERRAR PROGRAMA\n");
         scanf ("%d", &opcao);
         system("cls");
         switch (opcao){
@@ -176,7 +202,13 @@ int main (void)
                  mostrar_conta();
                  break;
             case (7):
-
+                // fechar_conta();
+                 break;
+            case (8):
+                 admin_admin();
+                 break;
+            case (9):
+                // reset_variavel();
                  break;
             case (0):
                  printf ("TEM CERTEZA QUE GOSTARIA DE FECHAR O PROGRAMA?\n 1 - SIM\n 2 - NÃO\n Digite: ");
