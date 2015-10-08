@@ -265,7 +265,13 @@ void admin_admin(){
     if (admin == 1){
         do{
             system("cls");
-            printf ("\n---MENU---  \n[1] FECHAR/ABRIR NOITE\n[2] EXTORQUIR ITEM\n[3] SALDO CAIXA\n[8] VOLTAR AO MENU PRINCIPAL\n[9] DESLOGAR\n");
+            printf ("\n_____________________________________");
+            printf ("\n|            MENU ADMIN             |");
+            printf ("\n|     [1] FECHAR/ABRIR NOITE        |");
+            printf ("\n|     [2] EXTORQUIR ITEM            |");
+            printf ("\n|     [3] SALDO CAIXA               |");
+            printf ("\n|     [8] VOLTAR AO MENU PRINCIPAL  |");
+            printf ("\n|     [9] DESLOGAR                  |\n_____________________________________\nOpção: ");
             scanf ("%d",&opcao);
             switch (opcao){
                 case (1):
