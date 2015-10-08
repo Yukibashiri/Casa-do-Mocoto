@@ -7,8 +7,18 @@ int main (void)
     setlocale(LC_ALL, "Portuguese"); // caracteres e acentuação da língua portuguesa.
     info();
     do{
-        printf ("---------------------------Bem-Vindo a Casa do Mocotó--------------------------\n[1] CARDAPIO\n[2] INFO\n[3] CADASTRO GARÇOM\n[4] ABRIR MESA\n[5] FAZER UM PEDIDO\n");
-        printf ("[6] MOSTRAR A CONTA\n[7] FECHAR CONTA\n[8] PAINEL DO ADMNISTRADOR\n[9] MOSTRAR COMISSÃO\n[0] ENCERRAR PROGRAMA\n");
+        printf ("_____________________________________\n");
+        printf ("|           Casa do Mocotó           | \n");
+        printf ("|   [1] CARDAPIO                     |\n");
+        printf ("|   [2] INFO                         |\n");
+        printf ("|   [3] CADASTRO GARÇOM              |\n");
+        printf ("|   [4] ABRIR MESA                   |\n");
+        printf ("|   [5] FAZER UM PEDIDO              |\n");
+        printf ("|   [6] MOSTRAR A CONTA              |\n");
+        printf ("|   [7] FECHAR CONTA                 |\n");
+        printf ("|   [8] PAINEL DO ADMNISTRADOR       |\n");
+        printf ("|   [9] MOSTRAR COMISSÃO             |\n");
+        printf ("|   [0] ENCERRAR PROGRAMA            |\n_____________________________________\nOpcão: ");
         scanf ("%d", &opcao);
         system("cls");
         switch (opcao){
