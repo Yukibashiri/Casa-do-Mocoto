@@ -38,7 +38,7 @@ void cardapio(){
             printf ("[%d] Produto: %s, Valor: %.2f.\n",cont,nome_produtos[cont],produtos[cont][0]);
         }
     }
-    printf ("------------------------------------CARDAPIO------------------------------------\n");
+    printf ("------------------------------------CARDAPIO------------------------------------");
     parada();
     return;
 }
@@ -48,7 +48,7 @@ void cadastro_garcom(){
     for (cont = 0; cont < 5; cont++){
         printf ("\nID:[%d]  Nome: %s.",cont,nomegarcom[cont]);
     }
-    printf ("\n Gostaria de Adicionar/Alterar algum Garçom?\n 1 - Sim. 2- Nao\n R: ");
+    printf ("\n Gostaria de Adicionar/Alterar algum Garçom? [1 - SIM/2 - NÃO]\n R: ");
     scanf ("%d",&decisao);
     if (decisao == 1){
         system ("cls");
@@ -72,64 +72,72 @@ void cadastro_garcom(){
 }
 // REGISTRAR GARÇOM A MESA.
 void abrir_mesa(){
-    printf ("Gostaria de ver a lista das mesas e seus garçons antes?\n 1 - Sim. 2 - Não\nR: ");
-    scanf ("%d", &decisao);
-    system("cls");
-    if (decisao == 1){
-        for (cont = 0; cont <15; cont++){
-                if (cont <=9){
-                    printf ("\nMesa 0%d, Garçom: %s.",cont,nomegarcom[link[cont]]);
-                }
-                else{
-                    printf ("\nMesa %d, Garçom: %s.",cont,nomegarcom[link[cont]]);
-                    parada();
-                }
+    printf ("Gostaria de abrir uma mesa? [ENTER - SIM/ESC - NÃO] ");
+    opcao = getch();
+    if (opcao == 13){
+        printf ("Gostaria de ver a lista das mesas e seus garçons antes?\n [1 - SIM/2 - NÃO]\nR: ");
+        scanf ("%d", &decisao);
+        system("cls");
+        if (decisao == 1){
+            for (cont = 0; cont <15; cont++){
+                    if (cont <=9){
+                        printf ("\nMesa 0%d, Garçom: %s.",cont,nomegarcom[link[cont]]);
+                    }
+                    else{
+                        printf ("\nMesa %d, Garçom: %s.",cont,nomegarcom[link[cont]]);
+                    }
+            }
+            parada();
         }
-    }
-    do{
-        printf ("\nInforme o ID da mesa: ");
-        scanf ("%d",&decisao);
-        if ((decisao <=14) && (link[decisao] == 5)) {
-            for (cont = 0; cont < 5; cont++){
-                printf ("\nID:[%d]  Nome: %s.",cont,nomegarcom[cont]);
+        do{
+            printf ("\nInforme o ID da mesa: ");
+            scanf ("%d",&decisao);
+            if ((decisao <=14) && (link[decisao] == 5)) {
+                for (cont = 0; cont < 5; cont++){
+                    printf ("\nID:[%d]  Nome: %s.",cont,nomegarcom[cont]);
+                }
+                do{
+                    printf ("\nInforme o ID do Garçom: ");
+                    scanf ("%d",&link[decisao]);
+                }
+                  while (link[decisao] > 5);
+                }
+            else {
+                printf ("\nERRO! ID informado não corresponde com nenhuma mesa ou a mesma já esta registrada.\n");
+                decisao = 20;
             }
-            do{
-                printf ("\nInforme o ID do Garçom: ");
-                scanf ("%d",&link[decisao]);
-            }
-              while (link[decisao] > 5);
-            }
-        else {
-            printf ("\nERRO! ID informado não corresponde com nenhuma mesa ou a mesma já esta registrada.\n");
-            decisao = 20;
         }
+        while (decisao == 20);
+        printf("\nMesa registrada com sucesso!\n");
     }
-    while (decisao == 20);
-    printf("\nMesa registrada com sucesso!\n");
     parada();
 }
 // Função que cria o pedido, já indicando a mesa e garçom.
 void pedido_item(){
-        certificar_mesa();
-        printf ("\nGostaria de rever o cardapio? 1 - SIM. 2 - NÃO\nR: ");
-        scanf ("%d",&opcao);
-        if (opcao == 1){
-            cardapio();
+        printf ("Gostaria de Fazer um pedido? [ENTER - SIM/ESC - NÃO] ");
+        opcao = getch();
+        if (opcao == 13){
+            certificar_mesa();
+            printf ("\nGostaria de rever o cardapio? [1 - SIM/2 - NÃO]\nR: ");
+            scanf ("%d",&opcao);
+            if (opcao == 1){
+                cardapio();
+            }
+            do{
+            printf ("\nQual o ID do produto? ");
+            scanf ("%d", &opcao);
+            printf ("\n Produto: %s.\n Quantidade: ",nome_produtos[opcao]);
+            scanf ("%d",&qnt_produto);
+            for (cont = 0; cont < qnt_produto; cont++){
+                mesa[decisao][ti[decisao]] = opcao;
+                ti[decisao] ++;
+            }
+            printf ("\n Item adicionado com sucesso!\n\nGostaria de adicionar mais algum item ao pedido? [1 - SIM/2 - NÃO]\nR: ");
+            scanf ("%d",&opcao);
+            system ("cls");
         }
-        do{
-        printf ("\nQual o ID do produto? ");
-        scanf ("%d", &opcao);
-        printf ("\n Produto: %s.\n Quantidade: ",nome_produtos[opcao]);
-        scanf ("%d",&qnt_produto);
-        for (cont = 0; cont < qnt_produto; cont++){
-            mesa[decisao][ti[decisao]] = opcao;
-            ti[decisao] ++;
-        }
-        printf ("\n Item adicionado com sucesso!\n\nGostaria de adicionar mais algum item ao pedido? 1- SIM. 2- NÃO\nR: ");
-        scanf ("%d",&opcao);
-        system ("cls");
+        while (opcao == 1);
     }
-    while (opcao == 1);
     parada();
     return;
 }
@@ -156,40 +164,44 @@ void mostrar_conta(){
 }
 // FECHAR CONTA, Atibuir comissao ao garçom.
 void fechar_conta(){
-    certificar_mesa();
-    printf ("Produtos consumidos pela mesa %d.\n",decisao);
-    for (cont = 0; cont < (ti[decisao]); cont ++){
-        printf ("\nProduto: %s, valor: %.2f.",nome_produtos[mesa[decisao][cont]],produtos[mesa[decisao][cont]][0]);
+    printf ("Gostaria de fechar uma mesa? [ENTER - SIM/ESC - NÃO] ");
+    opcao = getch();
+    if (opcao == 13){
+        certificar_mesa();
+        printf ("Produtos consumidos pela mesa %d.\n",decisao);
+        for (cont = 0; cont < (ti[decisao]); cont ++){
+            printf ("\nProduto: %s, valor: %.2f.",nome_produtos[mesa[decisao][cont]],produtos[mesa[decisao][cont]][0]);
+            }
+        for (clock[decisao]; clock[decisao] < (ti[decisao]); clock[decisao] ++){
+            totalmesa[decisao] += produtos[mesa[decisao][clock[decisao]]][0];
+            salgarcom[link[decisao]] = salgarcom[link[decisao]] + (produtos[mesa[decisao][clock[decisao]]][0] * produtos[mesa[decisao][clock[decisao]]][1]);
         }
-    for (clock[decisao]; clock[decisao] < (ti[decisao]); clock[decisao] ++){
-        totalmesa[decisao] += produtos[mesa[decisao][clock[decisao]]][0];
-        salgarcom[link[decisao]] = salgarcom[link[decisao]] + (produtos[mesa[decisao][clock[decisao]]][0] * produtos[mesa[decisao][clock[decisao]]][1]);
-    }
-    printf ("\n\nTotal a pagar: %.2f.\n",totalmesa[decisao],salgarcom[link[decisao]]);
-    printf ("Efetuar pagamento?    1- SIM.    2 - NÃO.\nR: ");
-    scanf ("%d",&opcao);
-    if (opcao == 1){
-        totalcaixa += totalmesa[decisao];
-        printf ("Mesa [%d], pagamento efetuado!\n       Obrigado pela preferência e volte sempre! \2\n",decisao);
-        for (cont = 0; cont < ti[decisao]; cont++){
-            mesa[decisao][cont] = 0;
+        printf ("\n\nTotal a pagar: %.2f.\n",totalmesa[decisao],salgarcom[link[decisao]]);
+        printf ("Efetuar pagamento?    1- SIM.    2 - NÃO.\nR: ");
+        scanf ("%d",&opcao);
+        if (opcao == 1){
+            totalcaixa += totalmesa[decisao];
+            printf ("Mesa [%d], pagamento efetuado!\n       Obrigado pela preferência e volte sempre! \2\n",decisao);
+            for (cont = 0; cont < ti[decisao]; cont++){
+                mesa[decisao][cont] = 0;
+            }
+            totalmesa[decisao] = 0;
+            link[decisao] = 0;
+            ti[decisao] = 0;
+            clock[decisao] = 0;
         }
-        totalmesa[decisao] = 0;
-        link[decisao] = 0;
-        ti[decisao] = 0;
-        clock[decisao] = 0;
-    }
-    else {
-        printf ("\nPagamento da conta, não efetuado!\n");
+        else {
+            printf ("\nPagamento da conta, não efetuado!\n");
+        }
     }
     parada();
     return;
 }
 // FUNÇÃO QUE RESETA TODAS AS VARIAVEIS, PARA REINICIAR O "DIA".
 void reset_fluxo(){
-    printf ("Tem certeza que gostaria de Reiniciar os valores?  1 - SIM.    2 - NÃO\n R: ");
-    scanf ("%d",&opcao);
-    if ((admin == 1) && (opcao == 1)){
+    printf ("Tem certeza que gostaria de Reiniciar os valores?  [ENTER - SIM/ESC - NÃO]\n R: ");
+    opcao = getch();
+    if ((admin == 1) && (opcao == 13)){
         for (decisao = 0; decisao < 15; decisao ++){
             clock[decisao] = 0;
             ti[decisao] = 0;
@@ -271,36 +283,37 @@ void admin_admin(){
             printf ("\n|     [2] EXTORQUIR ITEM            |");
             printf ("\n|     [3] SALDO CAIXA               |");
             printf ("\n|     [8] VOLTAR AO MENU PRINCIPAL  |");
-            printf ("\n|     [9] DESLOGAR                  |\n_____________________________________\nOpção: ");
-            scanf ("%d",&opcao);
+            printf ("\n|     [ESC] DESLOGAR                |\n_____________________________________\nOpção: ");
+            opcao = getch();
             switch (opcao){
-                case (1):
+                case (49):
                      reset_fluxo();
                      break;
-                case (2):
+                case (50):
                      extorquir_item();
                      break;
-                case (3):
+                case (51):
                      saldo_caixa();
                      break;
-                case (8):
-                     opcao = 9;
+                case (56):
+                     opcao = 0x1b;
                      printf ("Voltando ao menu principal!");
                      break;
-                case (9):
+                case (0x1b):
                      admin = 0;
                      printf ("\n     Conta deslogada!");
                      break;
             }
         }
-        while (opcao != 9);
+        while (opcao != 0x1b);
     }
+    opcao = 0;
     parada();
     return;
 }
 // FUNÇÃO QUE MOSTRA AO GARÇOM O VALOR QUE ESSE TEM A RECEBER.
 mostrar_comissao(){
-    printf ("\nExistem duas formas de checar a comissão total:    \n1 - ID da mesa sendo atendida atualmente.  \n2 - ID do garçom.\n R: ");
+    printf ("\nExistem duas formas de checar a comissão total:    \n1 - ID da mesa sendo atendida atualmente.  \n2 - ID do garçom.\n3 - Voltar ao Menu\n R: ");
     scanf ("%d",&opcao);
     switch (opcao){
         case (1):
