@@ -1,6 +1,5 @@
 #ifndef bibliotecamocoto
 #define bibliotecamocoto
-
 #include <stdio.h>                // Bibliotecas padrões
 #include <string.h>              // Será utilizada a função de comparar strings.
 #include <stdlib.h>             // Bibliotecas que serão utilizadas
