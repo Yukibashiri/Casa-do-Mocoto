@@ -18,47 +18,47 @@ int main (void)
         printf ("|   [7] FECHAR CONTA                 |\n");
         printf ("|   [8] PAINEL DO ADMNISTRADOR       |\n");
         printf ("|   [9] MOSTRAR COMISSÃO             |\n");
-        printf ("|   [0] ENCERRAR PROGRAMA            |\n_____________________________________\nOpcão: ");
-        scanf ("%d", &opcao);
+        printf ("|   [ESC] ENCERRAR PROGRAMA          |\n_____________________________________\nPressione a tecla no teclado referente ao numero do menu.");
+        opcao = getch();
         system("cls");
         switch (opcao){
-            case (1):
+            case (49):
                  cardapio(cont);
                  break;
-            case (2):
+            case (50):
                  info();
                  break;
-            case (3):
+            case (51):
                  cadastro_garcom();
                  break;
-            case (4):
+            case (52):
                  abrir_mesa();
                  break;
-            case (5):
+            case (53):
                  pedido_item();
                  break;
-            case (6):
+            case (54):
                  mostrar_conta();
                  break;
-            case (7):
+            case (55):
                  fechar_conta();
                  break;
-            case (8):
+            case (56):
                  admin_admin();
                  break;
-            case (9):
+            case (57):
                  mostrar_comissao();
                  break;
-            case (0):
+            case (0x1b):
                  printf ("TEM CERTEZA QUE GOSTARIA DE FECHAR O PROGRAMA?\n 1 - SIM\n 2 - NÃO\n Digite: ");
                  scanf("%d",&decisao);
-                 if (decisao!=1){
-                    opcao = 1;
-                    system ("cls");
+                 if (decisao==1){
+                    opcao = 9999999;
                  }
+                 system ("cls");
                  break;
         }
     }
-    while (opcao != 0);
+    while (opcao != 9999999);
 return 0;
 }
