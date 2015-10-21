@@ -7,7 +7,7 @@ int main (void)
     setlocale(LC_ALL, "Portuguese"); // caracteres e acentuação da língua portuguesa.
     info();
     do{
-        printf ("_____________________________________\n");
+        printf (" ____________________________________\n");
         printf ("|           Casa do Mocotó           | \n");
         printf ("|   [1] CARDAPIO                     |\n");
         printf ("|   [2] INFO                         |\n");
@@ -18,7 +18,7 @@ int main (void)
         printf ("|   [7] FECHAR CONTA                 |\n");
         printf ("|   [8] PAINEL DO ADMNISTRADOR       |\n");
         printf ("|   [9] MOSTRAR COMISSÃO             |\n");
-        printf ("|   [ESC] ENCERRAR PROGRAMA          |\n_____________________________________\nPressione a tecla no teclado referente ao numero do menu.");
+        printf ("|   [ESC] ENCERRAR PROGRAMA          |\n|____________________________________|\nPressione a tecla no teclado referente ao numero do menu.");
         opcao = getch();
         system("cls");
         switch (opcao){
@@ -39,6 +39,9 @@ int main (void)
                  break;
             case (54):
                  mostrar_conta();
+                 printf ("\nPressione qualquer botão para dar continuidade programa.");
+                 getch();
+                 system("cls");
                  break;
             case (55):
                  fechar_conta();
