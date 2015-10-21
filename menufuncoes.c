@@ -75,7 +75,7 @@ void abrir_mesa(){
     printf ("Gostaria de abrir uma mesa? [ENTER - SIM/ESC - NÃO] ");
     opcao = getch();
     if (opcao == 13){
-        printf ("Gostaria de ver a lista das mesas e seus garçons antes?\n [1 - SIM/2 - NÃO]\nR: ");
+        printf ("\nGostaria de ver a lista das mesas e seus garçons antes?\n [1 - SIM/2 - NÃO]\nR: ");
         scanf ("%d", &decisao);
         system("cls");
         if (decisao == 1){
@@ -98,7 +98,7 @@ void abrir_mesa(){
                 }
                 do{
                     printf ("\nInforme o ID do Garçom: ");
-                    scanf ("%d",&link[decisao]);
+                    scanf ("%d",&link[decisao]);            // é guardado na variavel link o ID referente ao garçom
                 }
                   while (link[decisao] > 5);
                 }
@@ -159,7 +159,6 @@ void mostrar_conta(){
     }
     printf ("\n                                      TOTAL: RS %.2f.\n", soma);
     soma = 0;
-    parada();
     return;
 }
 // FECHAR CONTA, Atibuir comissao ao garçom.
@@ -167,28 +166,29 @@ void fechar_conta(){
     printf ("Gostaria de fechar uma mesa? [ENTER - SIM/ESC - NÃO] ");
     opcao = getch();
     if (opcao == 13){
-        certificar_mesa();
-        printf ("Produtos consumidos pela mesa %d.\n",decisao);
-        for (cont = 0; cont < (ti[decisao]); cont ++){
-            printf ("\nProduto: %s, valor: %.2f.",nome_produtos[mesa[decisao][cont]],produtos[mesa[decisao][cont]][0]);
-            }
-        for (clock[decisao]; clock[decisao] < (ti[decisao]); clock[decisao] ++){
-            totalmesa[decisao] += produtos[mesa[decisao][clock[decisao]]][0];
-            salgarcom[link[decisao]] = salgarcom[link[decisao]] + (produtos[mesa[decisao][clock[decisao]]][0] * produtos[mesa[decisao][clock[decisao]]][1]);
-        }
-        printf ("\n\nTotal a pagar: %.2f.\n",totalmesa[decisao],salgarcom[link[decisao]]);
+        mostrar_conta();
         printf ("Efetuar pagamento?    1- SIM.    2 - NÃO.\nR: ");
         scanf ("%d",&opcao);
         if (opcao == 1){
-            totalcaixa += totalmesa[decisao];
-            printf ("Mesa [%d], pagamento efetuado!\n       Obrigado pela preferência e volte sempre! \2\n",decisao);
+            for (clock[decisao]; clock[decisao] < (ti[decisao]); clock[decisao] ++){ // CALCULO DA CONTA E COMISSAO.
+                totalmesa[decisao] += produtos[mesa[decisao][clock[decisao]]][0];
+                calculocomissao += (produtos[mesa[decisao][clock[decisao]]][0] * produtos[mesa[decisao][clock[decisao]]][1]);
+            }
+            totalcaixa += totalmesa[decisao]; // Registra o valor pago ao CAIXA.
+            salgarcom[link[decisao]] += calculocomissao; // Registra a comissão ao total do garçom.
+            nummesa[link[decisao]][tm[link[decisao]]] = decisao; // Registra o numero da mesa atendida pelo garçom.
+            commesa[link[decisao]][tm[link[decisao]]] = calculocomissao; // Registra a comissão da mesa atendida pelo garçom.
+            tm[link[decisao]] ++; // Contador da coluna das tabelas numesa e commesa, assim não sera sobreescrito os valores.
+            printf ("\nPagamento efetuado!\n       Obrigado pela preferência e volte sempre! \2\n",decisao);
+            // RESET DAS VARIAVEIS REFERENTES A PEDIDOS EFETUADOS, CONTA DA MESA E COMISSAO.
             for (cont = 0; cont < ti[decisao]; cont++){
                 mesa[decisao][cont] = 0;
             }
             totalmesa[decisao] = 0;
-            link[decisao] = 0;
+            link[decisao] = 5;
             ti[decisao] = 0;
             clock[decisao] = 0;
+            calculocomissao = 0;
         }
         else {
             printf ("\nPagamento da conta, não efetuado!\n");
@@ -227,11 +227,11 @@ void reset_fluxo(){
     parada();
     return;
 }
-//FUNÇÃO DE EXTORQUIR ITENS
+//FUNÇÃO DE EXTORNAR ITENS
 void extorquir_item(){
     mostrar_conta();
     do{
-        printf ("Informe o ID do pedido a ser extorquido: ");
+        printf ("Informe o ID do pedido a ser estornar: ");
         scanf ("%d",&cont);
         printf ("\n [%d]  Produto: %s, valor: %.2f.\n esta correto?     \n1 - SIM.    2 - NÃO.\nR: ",cont,nome_produtos[mesa[decisao][cont]],produtos[mesa[decisao][cont]][0]);
         scanf ("%d",&opcao);
@@ -239,7 +239,7 @@ void extorquir_item(){
             opcao = 99;
             mesa[decisao][cont]= 21;
             system("cls");
-            printf ("\nItem %d, extorquido com sucesso!.\n",cont);
+            printf ("\nItem %d, estornado com sucesso!.\n",cont);
             getch();
             printf ("Gostaria de ver a conta atualizada?\n1 - SIM.    2 - NÃO.\nR: ");
             scanf ("%d",&cont);
@@ -259,10 +259,10 @@ void extorquir_item(){
 //FUNÇÃO DE LOGUIN
 void admin_admin(){
     if (admin == 0){
-        printf ("Area destinada a Admnistradores!\n Admnistradores podem alterar nome de garçons, fechar/abrir a noite e Extorquir um pedido.\n");
-        printf ("\nPor favor, informe os seguintes dados:\n Usuario: ");
+        printf ("Area destinada a Admnistradores!");
+        printf ("\nPor favor, informe os seguintes dados:\n     Usuario: ");
         scanf ("%s",&loguin);
-        printf ("\n Senha: ");
+        printf ("       Senha: ");
         scanf ("%d",&loguin_pw);
         if (strcmp(loguin, "admin") == 0 && (loguin_pw == 12345)){
             admin = 1;
@@ -277,13 +277,13 @@ void admin_admin(){
     if (admin == 1){
         do{
             system("cls");
-            printf ("\n_____________________________________");
+            printf ("\n ___________________________________ ");
             printf ("\n|            MENU ADMIN             |");
             printf ("\n|     [1] FECHAR/ABRIR NOITE        |");
-            printf ("\n|     [2] EXTORQUIR ITEM            |");
+            printf ("\n|     [2] ESTORNAR ITEM             |");
             printf ("\n|     [3] SALDO CAIXA               |");
             printf ("\n|     [8] VOLTAR AO MENU PRINCIPAL  |");
-            printf ("\n|     [ESC] DESLOGAR                |\n_____________________________________\nOpção: ");
+            printf ("\n|     [ESC] DESLOGAR                |\n|___________________________________|\nOpção: ");
             opcao = getch();
             switch (opcao){
                 case (49):
@@ -313,27 +313,23 @@ void admin_admin(){
 }
 // FUNÇÃO QUE MOSTRA AO GARÇOM O VALOR QUE ESSE TEM A RECEBER.
 mostrar_comissao(){
-    printf ("\nExistem duas formas de checar a comissão total:    \n1 - ID da mesa sendo atendida atualmente.  \n2 - ID do garçom.\n3 - Voltar ao Menu\n R: ");
+    printf ("\nGostaria de Verificar a comissão de um Garçom?    \n1 - SIM.  \n2 NAO.\n R: ");
     scanf ("%d",&opcao);
-    switch (opcao){
-        case (1):
-             certificar_mesa();
-             printf ("Garçom: %s, Comissão:  %.2f.",nomegarcom[link[decisao]],salgarcom[link[decisao]]);
-             break;
-        case (2):
-             do{
-                printf ("\nInforme o ID do garçom: ");
-                scanf("%d",&opcao);
-                if (opcao > 5){
-                    printf ("\nERRO! ID digitado invalido!\n");
-                }
+    if (opcao==1){
+        do{
+        printf ("\nInforme o ID do garçom: ");
+        scanf("%d",&decisao);
+            if (decisao > 5){
+                printf ("\nERRO! ID digitado invalido!\n");
             }
-            while (opcao > 5);
-            system ("cls");
-            printf ("Garçom: %s, Comissão:  %.2f.",nomegarcom[opcao],salgarcom[opcao]);
-            break;
-        default:
-            printf ("\nOpção invalida!\n");
+        }
+        while (decisao > 5);
+        system ("cls");
+        printf ("\nOrdem das mesas atendidas pelo Garçom %s",nomegarcom[decisao]);
+        for (cont = 0; cont < tm[decisao]; cont++){
+            printf ("\nMesa Nº [%d]. Comissão: R$ %.2f.",nummesa[decisao][cont],commesa[decisao][cont]);
+        }
+        printf ("\n             TOTAL A SER RECEBIDO: R$ %.2f.",salgarcom[decisao]);
     }
     parada();
     return;
@@ -343,7 +339,7 @@ void saldo_caixa(){
     for (cont = 0; cont < 6; cont ++){
         totalcomissoes += salgarcom[cont];
     }
-    printf ("Total recebido: %.2f.\nComissões: %.2f.\nResto: %.2f.",totalcaixa,totalcomissoes,(totalcaixa - totalcomissoes));
+    printf ("\nTotal recebido: R$ %.2f.\nComissões: R$ %.2f.\n        Resto: R$ %.2f.",totalcaixa,totalcomissoes,(totalcaixa - totalcomissoes));
     totalcomissoes = 0;
     parada();
     return;
