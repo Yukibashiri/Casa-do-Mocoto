@@ -7,8 +7,9 @@ int main (void)
     setlocale(LC_ALL, "Portuguese"); // caracteres e acentuação da língua portuguesa.
     info();
     do{
+        printf ("\n         RESTAURANTE XYZ LTDA.     \n");
         printf (" ____________________________________\n");
-        printf ("|           Casa do Mocotó           | \n");
+        printf ("|                                    | \n");
         printf ("|   [1] CARDAPIO                     |\n");
         printf ("|   [2] INFO                         |\n");
         printf ("|   [3] CADASTRO GARÇOM              |\n");
